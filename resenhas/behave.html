@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<title>BEHAVE — Robert Sapolsky | Aula interativa</title>
+<style>
+  :root{
+    --bg:#f4f0e8; --paper:#fffdf8; --ink:#171a1d; --muted:#5f656b;
+    --accent:#d06b3c; --accent2:#587b6d; --gold:#c8993e; --line:#d9d0c3;
+    --dark:#1b2024; --danger:#a7433d; --good:#3e7456; --shadow:0 18px 45px rgba(26,31,35,.12);
+    --radius:22px; --fs:18px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--fs)/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  body.dark{--bg:#121619;--paper:#1d2327;--ink:#f3f0e8;--muted:#b7b7b7;--line:#394148;--shadow:0 18px 45px rgba(0,0,0,.35)}
+  a{color:inherit;text-decoration-color:var(--accent);text-underline-offset:3px}
+  button{font:inherit}
+  .toolbar{position:fixed;z-index:50;right:18px;top:18px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:520px}
+  .tool{border:1px solid color-mix(in srgb,var(--line) 76%,transparent);background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(12px);color:var(--ink);border-radius:999px;padding:9px 13px;cursor:pointer;box-shadow:0 5px 18px rgba(0,0,0,.08)}
+  .tool:hover{transform:translateY(-1px)}
+  .wrap{width:min(1180px,calc(100% - 34px));margin:0 auto}
+  .hero{min-height:100vh;display:grid;align-items:center;padding:84px 0 58px;position:relative;overflow:hidden}
+  .hero:before{content:"";position:absolute;inset:-20% auto auto -10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,var(--accent) 0 2%,transparent 3%),radial-gradient(circle at 40% 40%,rgba(208,107,60,.16),transparent 62%);background-size:22px 22px,auto;opacity:.85;transform:rotate(-7deg)}
+  .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:50px;align-items:center;position:relative}
+  .kicker{display:inline-flex;gap:9px;align-items:center;font-size:.82rem;text-transform:uppercase;letter-spacing:.16em;font-weight:800;color:var(--accent2)}
+  .kicker:before{content:"";width:34px;height:2px;background:var(--accent2)}
+  h1{font-size:clamp(3rem,9vw,7.4rem);line-height:.84;letter-spacing:-.065em;margin:.18em 0 .12em;text-transform:uppercase}
+  h1 span{display:block;color:var(--accent);font-size:.27em;letter-spacing:.08em;line-height:1.2;margin-top:.75em;text-transform:none}
+  .hero p{font-size:clamp(1.15rem,2.3vw,1.65rem);max-width:790px;margin:28px 0;color:var(--muted)}
+  .thesis{border-left:5px solid var(--accent);padding:18px 22px;background:color-mix(in srgb,var(--paper) 78%,transparent);border-radius:0 18px 18px 0;box-shadow:var(--shadow);max-width:850px}
+  .thesis strong{color:var(--ink)}
+  .cover{aspect-ratio:3/4.2;border-radius:26px;background:linear-gradient(165deg,#fcfbf5,#efe9dc);box-shadow:var(--shadow);border:1px solid var(--line);padding:28px;position:relative;overflow:hidden;color:#202426}
+  .cover .dots{position:absolute;inset:0;background-image:radial-gradient(#87a57a 1.7px,transparent 1.9px),radial-gradient(#dc8a57 1.7px,transparent 1.9px);background-size:18px 18px,18px 18px;background-position:15px 20px,24px 29px;mask-image:radial-gradient(circle at 52% 52%,black 0 18%,transparent 46%);opacity:.9}
+  .cover .sil{position:absolute;width:34%;left:33%;top:34%;opacity:.78}
+  .cover .book-title{font-family:Georgia,serif;letter-spacing:.18em;text-align:center;font-size:clamp(2.4rem,5vw,4.4rem);margin-top:16px}
+  .cover .book-sub{text-transform:uppercase;letter-spacing:.14em;text-align:center;font-size:.72rem;max-width:260px;margin:8px auto}
+  .cover .author{position:absolute;bottom:26px;left:0;right:0;text-align:center;letter-spacing:.16em;font-weight:700;font-family:Georgia,serif}
+  section{padding:92px 0;position:relative}
+  section.alt{background:color-mix(in srgb,var(--paper) 86%,var(--bg))}
+  .section-head{display:grid;grid-template-columns:140px 1fr;gap:28px;align-items:start;margin-bottom:44px}
+  .num{font-size:4rem;font-weight:900;line-height:1;color:var(--line);letter-spacing:-.06em}
+  h2{font-size:clamp(2rem,4.8vw,4.25rem);line-height:.98;letter-spacing:-.045em;margin:0}
+  .lead{font-size:1.2rem;color:var(--muted);max-width:880px;margin:16px 0 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:0 9px 28px rgba(0,0,0,.045)}
+  .card h3{margin:0 0 8px;font-size:1.35rem;line-height:1.1}
+  .card p{margin:8px 0;color:var(--muted)}
+  .icon{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;background:color-mix(in srgb,var(--accent) 13%,var(--paper));margin-bottom:16px}
+  .tag{display:inline-block;padding:5px 9px;border-radius:999px;background:color-mix(in srgb,var(--accent2) 13%,transparent);color:var(--accent2);font-weight:800;font-size:.74rem;text-transform:uppercase;letter-spacing:.07em}
+  .timeline-wrap{display:grid;grid-template-columns:330px 1fr;gap:28px}
+  .timeline{display:flex;flex-direction:column;gap:9px;position:relative}
+  .timebtn{border:1px solid var(--line);background:var(--paper);color:var(--ink);text-align:left;padding:14px 16px;border-radius:15px;cursor:pointer;display:grid;grid-template-columns:34px 1fr;gap:11px;align-items:center;transition:.2s}
+  .timebtn b{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent);font-size:.8rem}
+  .timebtn small{display:block;color:var(--muted)}
+  .timebtn.active{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent);transform:translateX(5px)}
+  .timepanel{min-height:500px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(150deg,color-mix(in srgb,var(--paper) 95%,var(--accent) 5%),var(--paper));border:1px solid var(--line);border-radius:28px;padding:34px;box-shadow:var(--shadow)}
+  .timepanel h3{font-size:2.35rem;line-height:1.05;margin:.25em 0}
+  .timepanel .big{font-size:1.3rem;color:var(--muted)}
+  .timepanel .question{font-size:1.45rem;font-weight:800;border-top:1px solid var(--line);padding-top:20px;margin-top:25px}
+  .visual{min-height:210px;display:grid;place-items:center;margin:10px 0}
+  .svgbox{width:min(100%,540px);height:auto}
+  .false-dichotomy{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center}
+  .pole{padding:30px;text-align:center;border-radius:24px;background:var(--paper);border:1px solid var(--line)}
+  .pole h3{font-size:2rem;margin:8px 0}
+  .feedback{font-size:3rem;color:var(--accent);font-weight:900}
+  table{width:100%;border-collapse:separate;border-spacing:0;background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  th,td{padding:16px 17px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  th{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;background:color-mix(in srgb,var(--accent2) 9%,var(--paper));color:var(--accent2)}
+  tr:last-child td{border-bottom:0}
+  .myth{color:var(--danger);font-weight:800}.nuance{color:var(--good);font-weight:800}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:28px;overflow:hidden;background:var(--paper)}
+  .split>div{padding:34px;min-height:320px}.split .best{background:color-mix(in srgb,var(--good) 10%,var(--paper))}.split .worst{background:color-mix(in srgb,var(--danger) 9%,var(--paper))}
+  .split h3{font-size:2rem;margin:0 0 15px}.split ul{padding-left:20px}.split li{margin:8px 0}
+  .us-them{background:var(--dark);color:#f6f2e8;border-radius:30px;padding:32px;box-shadow:var(--shadow)}
+  .us-them p{color:#d6d8d8}.group-row{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.groupbtn{border:1px solid #4f5960;color:#f6f2e8;background:#232a2f;padding:11px 15px;border-radius:999px;cursor:pointer}.groupbtn.active{background:var(--accent);border-color:var(--accent)}
+  .group-result{display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:center;background:#232a2f;border-radius:20px;padding:18px;min-height:160px}.avatar{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 45% 36%,#e4b28f 0 17%,transparent 18%),radial-gradient(circle at 50% 45%,#e4b28f 0 28%,transparent 29%),linear-gradient(#667,#334);position:relative}.avatar:after{content:"";position:absolute;left:23px;right:23px;bottom:-16px;height:48px;border-radius:24px 24px 12px 12px;background:#65747f}
+  .freewill{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+  .chain{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:22px 0}.node{padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:var(--paper);font-weight:700}.arrow{color:var(--accent);font-weight:900}
+  .quoteish{font:700 clamp(1.65rem,3.4vw,3.1rem)/1.18 Georgia,serif;border-left:7px solid var(--gold);padding-left:25px;margin:0}.quoteish small{display:block;font:400 .9rem/1.4 system-ui;margin-top:14px;color:var(--muted)}
+  .philo{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.philo .card{min-height:220px}
+  .quiz{display:grid;gap:14px}.q{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}.q button{border:0;background:var(--dark);color:#fff;padding:9px 12px;border-radius:10px;cursor:pointer}.answer{display:none;margin-top:13px;padding:13px;border-radius:12px;background:color-mix(in srgb,var(--accent2) 12%,var(--paper))}.answer.show{display:block}
+  .sources{font-size:.93rem;color:var(--muted)}.sources li{margin:12px 0}.sources a{color:var(--ink)}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:.9rem;text-align:center}
+  .progress{position:fixed;z-index:60;left:0;top:0;height:4px;background:var(--accent);width:0}
+  .note{padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--gold) 13%,var(--paper));border:1px dashed color-mix(in srgb,var(--gold) 55%,var(--line));font-size:.95rem}
+  .printonly{display:none}
+  @media(max-width:900px){.hero-grid,.timeline-wrap,.freewill,.grid2,.grid3,.philo{grid-template-columns:1fr}.hero{padding-top:110px}.cover{max-width:420px;margin:auto}.section-head{grid-template-columns:1fr}.num{font-size:2.5rem}.false-dichotomy{grid-template-columns:1fr}.feedback{transform:rotate(90deg);text-align:center}.split{grid-template-columns:1fr}.group-result{grid-template-columns:1fr}.avatar{margin:auto}}
+  @media print{.toolbar,.progress,.quiz button{display:none!important}body{background:#fff;color:#111;font-size:12pt}.hero,section{padding:30px 0;min-height:auto}.wrap{width:94%}.card,.timepanel,.cover,.us-them{box-shadow:none;break-inside:avoid}.timeline-wrap{grid-template-columns:1fr}.timeline{display:none}.printonly{display:block}.timepanel{min-height:auto}.answer{display:block}.sources a{text-decoration:none}.cover{max-width:270px}.hero-grid{grid-template-columns:1fr 280px}h1{font-size:48pt}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="toolbar" aria-label="Controles da apresentação">
+  <button class="tool" onclick="toggleDark()">◐ Tema</button>
+  <button class="tool" onclick="changeFont(1)">A+</button>
+  <button class="tool" onclick="changeFont(-1)">A−</button>
+  <button class="tool" onclick="document.documentElement.requestFullscreen?.()">⛶ Tela cheia</button>
+  <button class="tool" onclick="window.print()">⇩ PDF / Imprimir</button>
+</div>
+
+<header class="hero" id="topo">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">Filosofia • Neurociência • Comportamento</div>
+      <h1>Behave<span>Robert M. Sapolsky — a biologia de humanos em nosso melhor e pior</span></h1>
+      <p>Uma aula sobre como explicar o comportamento humano sem reduzi-lo a um único fator — nem gene, nem hormônio, nem cérebro, nem cultura.</p>
+      <div class="thesis"><strong>Tese central:</strong> um comportamento é o ponto final provisório de uma cadeia causal multiescalar: segundos, horas, anos, gerações, séculos e milhões de anos convergem no instante da ação.</div>
+    </div>
+    <div class="cover" aria-label="Ilustração pedagógica inspirada no tema do livro">
+      <div class="dots"></div>
+      <div class="book-title">BEHAVE</div>
+      <div class="book-sub">The biology of humans at our best and worst</div>
+      <svg class="sil" viewBox="0 0 120 280" role="img" aria-label="silhueta humana">
+        <circle cx="60" cy="32" r="22" fill="#373d40"/>
+        <path d="M46 58 C30 90 30 130 34 166 L24 248 Q22 266 39 268 L54 182 L66 182 L81 268 Q98 266 96 248 L86 166 C90 130 90 90 74 58Z" fill="#373d40"/>
+        <path d="M42 83 L8 160 Q5 171 17 176 L49 119 M78 83 L112 160 Q115 171 103 176 L71 119" stroke="#373d40" stroke-width="14" stroke-linecap="round" fill="none"/>
+      </svg>
+      <div class="author">ROBERT M. SAPOLSKY</div>
+    </div>
+  </div>
+</header>
+
+<section id="estrutura">
+  <div class="wrap">
+    <div class="section-head"><div class="num">01</div><div><h2>O truque estrutural do livro</h2><p class="lead">Sapolsky começa no instante imediatamente anterior a uma ação e recua no tempo. A pergunta “por que ele fez isso?” muda de significado a cada escala.</p></div></div>
+    <div class="timeline-wrap">
+      <div class="timeline" id="timeline"></div>
+      <div class="timepanel" id="timepanel">
+        <div><span class="tag" id="ptime">1 segundo antes</span><h3 id="ptitle">Neurônios em ação</h3><p class="big" id="ptext"></p></div>
+        <div class="visual" id="pvisual"></div>
+        <div class="question" id="pquestion"></div>
+      </div>
+    </div>
+    <div class="printonly note" style="margin-top:20px">Na impressão, use a tabela-resumo na seção seguinte para visualizar todas as escalas causais de uma vez.</div>
+  </div>
+</section>
+
+<section class="alt" id="mapa-causal">
+  <div class="wrap">
+    <div class="section-head"><div class="num">02</div><div><h2>Uma ação, muitas causas</h2><p class="lead">O ponto decisivo não é escolher “a causa verdadeira”, mas entender como causas em níveis diferentes se acoplam.</p></div></div>
+    <table>
+      <thead><tr><th>Escala temporal</th><th>Foco explicativo</th><th>Pergunta didática</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1 segundo</strong></td><td>Atividade neural; equilíbrio entre circuitos de ameaça, controle, recompensa e hábito.</td><td>O que o cérebro estava fazendo imediatamente antes?</td></tr>
+        <tr><td><strong>Segundos–minutos</strong></td><td>Estímulos sensoriais, interpretação da situação, presença de outras pessoas.</td><td>O que foi percebido — e como foi interpretado?</td></tr>
+        <tr><td><strong>Horas–dias</strong></td><td>Estresse, sono, fome, hormônios, substâncias, estado fisiológico.</td><td>Em que estado corporal a decisão ocorreu?</td></tr>
+        <tr><td><strong>Meses–anos</strong></td><td>Aprendizagem, hábito, plasticidade, experiências repetidas.</td><td>Que história de aprendizagem preparou a resposta?</td></tr>
+        <tr><td><strong>Infância e adolescência</strong></td><td>Desenvolvimento cerebral, socialização, vínculo, adversidade, oportunidades.</td><td>Como o organismo foi se tornando aquele organismo?</td></tr>
+        <tr><td><strong>Vida fetal / gerações</strong></td><td>Desenvolvimento, genes, regulação gênica e ambiente.</td><td>Que predisposições e condições foram herdadas ou construídas?</td></tr>
+        <tr><td><strong>Séculos</strong></td><td>Cultura, instituições, religião, economia, normas e categorias sociais.</td><td>Que mundo social tornou certas respostas imagináveis ou legítimas?</td></tr>
+        <tr><td><strong>Milhões de anos</strong></td><td>Evolução de sistemas de apego, ameaça, cooperação, competição e parentalidade.</td><td>Que problemas adaptativos moldaram a arquitetura que hoje responde?</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="natureza-cultura">
+  <div class="wrap">
+    <div class="section-head"><div class="num">03</div><div><h2>Natureza × cultura é uma pergunta ruim</h2><p class="lead">Em <em>Behave</em>, biologia e cultura não aparecem como duas forças rivais. Elas entram em circuitos de retroalimentação.</p></div></div>
+    <div class="false-dichotomy">
+      <div class="pole"><div class="icon" style="margin-inline:auto">🧬</div><h3>Biologia</h3><p>Genes, cérebro, hormônios, desenvolvimento, corpo.</p></div>
+      <div class="feedback">⇄</div>
+      <div class="pole"><div class="icon" style="margin-inline:auto">🏛️</div><h3>Cultura</h3><p>Normas, instituições, linguagem, hierarquias, aprendizagem, símbolos.</p></div>
+    </div>
+    <div class="grid3" style="margin-top:24px">
+      <div class="card"><span class="tag">Exemplo 1</span><h3>Experiência muda cérebro</h3><p>Aprendizagem e ambiente social alteram circuitos, hábitos e respostas futuras. “Cultural” também pode tornar-se biologicamente incorporado.</p></div>
+      <div class="card"><span class="tag">Exemplo 2</span><h3>Biologia abre possibilidades</h3><p>Capacidades de linguagem, afeto, memória e imitação tornam possíveis mundos culturais que depois reorganizam o comportamento.</p></div>
+      <div class="card"><span class="tag">Conclusão</span><h3>Interação, não soma</h3><p>Não é “50% genes + 50% ambiente”. É um sistema em que cada componente altera o funcionamento dos demais.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="cerebro">
+  <div class="wrap">
+    <div class="section-head"><div class="num">04</div><div><h2>O cérebro não é um tribunal com um juiz único</h2><p class="lead">Decisão, medo, recompensa, hábito e autocontrole emergem de redes que competem e cooperam. O desenho abaixo é esquemático — serve para ensinar relações funcionais, não anatomia clínica.</p></div></div>
+    <div class="grid2">
+      <div class="card">
+        <svg viewBox="0 0 640 430" class="svgbox" role="img" aria-label="diagrama esquemático de cérebro">
+          <path d="M123 218C97 121 170 57 276 56c71-25 169 6 201 67 80 12 111 101 68 157-29 37-71 38-112 35-43 67-137 71-194 37-70 20-141-25-137-87-42-2-60-45-36-77 13-18 34-26 57-20Z" fill="#e8dfd1" stroke="#6e7477" stroke-width="5"/>
+          <path d="M165 205c26-55 91-89 150-79 10 54-10 105-55 130-36 20-74 8-95-17Z" fill="#c8714f" opacity=".9"/>
+          <path d="M338 118c64 3 112 34 130 91-23 35-60 54-108 49-30-37-39-90-22-140Z" fill="#759582" opacity=".9"/>
+          <ellipse cx="332" cy="257" rx="32" ry="24" fill="#b74742"/>
+          <path d="M301 286c40 8 71 4 101-12" stroke="#c79b43" stroke-width="18" stroke-linecap="round"/>
+          <line x1="190" y1="162" x2="78" y2="95" stroke="#555" stroke-width="3"/><text x="18" y="85" font-size="23" fill="currentColor">controle / planejamento</text>
+          <line x1="333" y1="257" x2="511" y2="351" stroke="#555" stroke-width="3"/><text x="485" y="384" font-size="23" fill="currentColor">ameaça / saliência</text>
+          <line x1="395" y1="177" x2="536" y2="105" stroke="#555" stroke-width="3"/><text x="490" y="88" font-size="23" fill="currentColor">integração contextual</text>
+        </svg>
+      </div>
+      <div class="card">
+        <h3>O erro do “botão cerebral”</h3><p class="myth">Mito: “A amígdala causou a agressão.”</p><p class="nuance">Melhor: circuitos de ameaça e saliência participaram de uma resposta cujo significado dependeu de contexto, aprendizagem, estado fisiológico e regulação por outras regiões.</p>
+        <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+        <p class="myth">Mito: “O córtex pré-frontal é a parte racional que derrota a emoção.”</p><p class="nuance">Melhor: raciocínio e emoção se interpenetram; autocontrole também depende de valor, motivação, memória e contexto social.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hormonios">
+  <div class="wrap">
+    <div class="section-head"><div class="num">05</div><div><h2>Hormônios modulam; eles não escrevem o roteiro sozinhos</h2><p class="lead">Sapolsky é especialmente útil para desmontar frases causais simplistas do tipo “foi a testosterona”.</p></div></div>
+    <table>
+      <thead><tr><th>Fator</th><th>Leitura simplista</th><th>Leitura mais adequada</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Testosterona</strong></td><td class="myth">“Hormônio da violência.”</td><td>Relaciona-se fortemente a busca e manutenção de status; o comportamento concreto depende das normas do contexto.</td></tr>
+        <tr><td><strong>Cortisol</strong></td><td class="myth">“Hormônio ruim do estresse.”</td><td>É parte de uma resposta adaptativa ao desafio; exposição crônica ou desregulada pode gerar custos fisiológicos e cognitivos.</td></tr>
+        <tr><td><strong>Dopamina</strong></td><td class="myth">“Molécula do prazer.”</td><td>Participa de aprendizagem, motivação e antecipação de recompensa — muitas vezes mais do “querer” e da previsão do que do prazer em si.</td></tr>
+        <tr><td><strong>Oxitocina</strong></td><td class="myth">“Hormônio do amor universal.”</td><td>Pode reforçar vínculo e confiança, mas seus efeitos dependem do contexto e podem favorecer relações de grupo em vez de benevolência universal.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="alt" id="melhor-pior">
+  <div class="wrap">
+    <div class="section-head"><div class="num">06</div><div><h2>O mesmo animal: o melhor e o pior de nós</h2><p class="lead">O subtítulo do livro é crucial. A biologia humana sustenta altruísmo extraordinário e violência extraordinária. O problema é compreender quando e contra quem cada repertório é mobilizado.</p></div></div>
+    <div class="split">
+      <div class="best"><span class="tag">Nosso melhor</span><h3>Cooperação</h3><ul><li>cuidado parental e vínculos;</li><li>empatia e ajuda a desconhecidos;</li><li>cooperação em larga escala;</li><li>sacrifício por outras pessoas;</li><li>normas contra exploração e injustiça.</li></ul></div>
+      <div class="worst"><span class="tag" style="color:var(--danger);background:rgba(167,67,61,.12)">Nosso pior</span><h3>Violência</h3><ul><li>hierarquias e dominação;</li><li>agressão instrumental;</li><li>xenofobia e desumanização;</li><li>violência coletiva;</li><li>crueldade legitimada por normas de grupo.</li></ul></div>
+    </div>
+    <div class="note" style="margin-top:22px"><strong>Chave didática:</strong> a questão não é “somos naturalmente bons ou maus?”. Sapolsky desloca a pergunta: <strong>quais condições tornam mais provável que certos potenciais sejam ativados?</strong></div>
+  </div>
+</section>
+
+<section id="nos-eles">
+  <div class="wrap">
+    <div class="section-head"><div class="num">07</div><div><h2>“Nós” × “Eles”: o grupo muda a percepção</h2><p class="lead">Uma das linhas mais importantes do livro é a facilidade com que humanos classificam, favorecem, temem e reclassificam grupos. As fronteiras são poderosas — e também surpreendentemente móveis.</p></div></div>
+    <div class="us-them">
+      <h3 style="font-size:2rem;margin-top:0">Experimento mental: a mesma pessoa, quatro enquadramentos</h3>
+      <p>Escolha uma categoria. O indivíduo abaixo não muda; muda apenas a moldura social.</p>
+      <div class="group-row">
+        <button class="groupbtn active" data-g="rival">Torcida rival</button>
+        <button class="groupbtn" data-g="colega">Colega de trabalho</button>
+        <button class="groupbtn" data-g="vizinho">Vizinho em uma enchente</button>
+        <button class="groupbtn" data-g="humano">Pessoa em perigo</button>
+      </div>
+      <div class="group-result"><div class="avatar"></div><div><h3 id="gtitle" style="margin:0 0 6px">“Eles”</h3><p id="gtext" style="margin:0">A categoria competitiva pode tornar diferenças mais salientes e favorecer leitura hostil de sinais ambíguos.</p></div></div>
+    </div>
+    <div class="grid3" style="margin-top:22px">
+      <div class="card"><h3>Categorização</h3><p>O cérebro social simplifica rapidamente o mundo em grupos e papéis.</p></div>
+      <div class="card"><h3>Contexto</h3><p>A mesma pessoa pode ser “eles” num jogo e “nós” diante de uma ameaça compartilhada.</p></div>
+      <div class="card"><h3>Política</h3><p>Instituições e discursos podem endurecer ou flexibilizar fronteiras de pertencimento.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="livre-arbitrio">
+  <div class="wrap">
+    <div class="section-head"><div class="num">08</div><div><h2>O problema filosófico: onde caberia o livre-arbítrio?</h2><p class="lead"><em>Behave</em> já aponta para a posição determinista de Sapolsky; em <em>Determined</em> (2023), esse argumento se torna o tema central.</p></div></div>
+    <div class="freewill">
+      <div>
+        <div class="chain"><span class="node">neurônios</span><span class="arrow">→</span><span class="node">hormônios</span><span class="arrow">→</span><span class="node">desenvolvimento</span><span class="arrow">→</span><span class="node">experiências</span><span class="arrow">→</span><span class="node">genes</span><span class="arrow">→</span><span class="node">cultura</span><span class="arrow">→</span><span class="node">evolução</span></div>
+        <p class="quoteish">Se cada estado tem antecedentes causais, onde exatamente entraria um “eu” independente da cadeia?<small>Formulação didática da consequência filosófica do argumento de Sapolsky — não é uma citação literal.</small></p>
+      </div>
+      <div class="card"><h3>Importante distinguir</h3><p><strong>Em <em>Behave</em>:</strong> a arquitetura principal é a explicação multicausal do comportamento.</p><p><strong>Em <em>Determined</em>:</strong> Sapolsky transforma a inexistência do livre-arbítrio tradicional em tese explícita e central.</p><p><strong>Questão filosófica:</strong> determinação causal elimina responsabilidade, ou apenas exige redefini-la?</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="filosofia">
+  <div class="wrap">
+    <div class="section-head"><div class="num">09</div><div><h2>Quatro consequências filosóficas</h2><p class="lead">Aqui está o ponto em que <em>Behave</em> deixa de ser apenas um grande livro de biologia do comportamento e se torna material filosófico de primeira ordem.</p></div></div>
+    <div class="philo">
+      <div class="card"><div class="icon">⚖️</div><h3>Culpa e punição</h3><p>Se ações têm histórias causais profundas, a punição retributiva precisa ser justificada de outro modo — ou substituída por proteção, prevenção e reabilitação.</p></div>
+      <div class="card"><div class="icon">🧍</div><h3>Crítica ao sujeito soberano</h3><p>O indivíduo não aparece como causa primeira de si mesmo, mas como organismo histórico, corporal e situado.</p></div>
+      <div class="card"><div class="icon">🌐</div><h3>Relacionalidade</h3><p>Explicar uma ação implica reconstruir redes de relações: corpo, ambiente, instituições, linguagem e história.</p></div>
+      <div class="card"><div class="icon">🔬</div><h3>Humildade causal</h3><p>Quanto mais complexo o comportamento, menos legítimo é tratá-lo como efeito de uma explicação única e confortável.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="ponte">
+  <div class="wrap">
+    <div class="section-head"><div class="num">10</div><div><h2>Pontes possíveis com Filosofia da Tecnologia</h2><p class="lead">Sem dizer que Sapolsky, Latour e Ihde defendem a mesma teoria, é possível colocá-los em diálogo em torno de um problema comum: a insuficiência do sujeito isolado.</p></div></div>
+    <div class="grid3">
+      <div class="card"><span class="tag">Sapolsky</span><h3>Agente biologicamente situado</h3><p>O comportamento emerge de uma história causal corporal, social e evolutiva.</p></div>
+      <div class="card"><span class="tag">Latour</span><h3>Agência distribuída</h3><p>A ação pode ser descrita como efeito de associações entre humanos, artefatos, instituições e outros actantes.</p></div>
+      <div class="card"><span class="tag">Ihde</span><h3>Mediação tecnológica</h3><p>A relação sujeito–mundo é transformada por tecnologias que ampliam, reduzem, destacam e reorganizam a experiência.</p></div>
+    </div>
+    <div class="note" style="margin-top:22px"><strong>Ponto de contato:</strong> nos três casos, explicar ação e experiência exige olhar para relações e condições — não para um “eu” completamente autônomo, transparente a si mesmo e separado do mundo.</div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head"><div class="num">11</div><div><h2>Cheque de compreensão</h2><p class="lead">Use estas perguntas no meio ou no fim da aula. Clique em “mostrar resposta” depois de ouvir a turma.</p></div></div>
+    <div class="quiz">
+      <div class="q"><strong>1. Por que “foi a testosterona” é uma explicação fraca?</strong><div><button onclick="reveal(this)">Mostrar resposta</button></div><div class="answer">Porque o efeito de um hormônio depende de contexto, história, normas e outros sistemas. Testosterona não especifica sozinha qual comportamento ocorrerá.</div></div>
+      <div class="q"><strong>2. Sapolsky elimina a cultura ao biologizar o comportamento?</strong><div><button onclick="reveal(this)">Mostrar resposta</button></div><div class="answer">Não. Cultura, aprendizagem e instituições entram na cadeia causal e podem modificar o próprio funcionamento biológico.</div></div>
+      <div class="q"><strong>3. Qual é a principal função da estrutura temporal do livro?</strong><div><button onclick="reveal(this)">Mostrar resposta</button></div><div class="answer">Mostrar que a ação atual é o ponto de convergência de processos que operam em escalas temporais diferentes, impedindo explicações monocausais.</div></div>
+      <div class="q"><strong>4. “Nós × eles” é fixo?</strong><div><button onclick="reveal(this)">Mostrar resposta</button></div><div class="answer">Não. Categorias sociais podem ser rápidas e poderosas, mas são contextuais e podem ser reconfiguradas quando outros pertencimentos se tornam salientes.</div></div>
+      <div class="q"><strong>5. Qual tensão filosófica emerge do livro?</strong><div><button onclick="reveal(this)">Mostrar resposta</button></div><div class="answer">Se o comportamento é inteiramente inserido em cadeias causais, torna-se difícil localizar um livre-arbítrio entendido como causa independente; isso obriga a repensar responsabilidade e punição.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="debate">
+  <div class="wrap">
+    <div class="section-head"><div class="num">12</div><div><h2>Perguntas para debate</h2><p class="lead">Quatro perguntas que permitem levar a aula da exposição para a argumentação filosófica.</p></div></div>
+    <div class="grid2">
+      <div class="card"><h3>1. Explicar é desculpar?</h3><p>Se conhecemos as causas de uma ação violenta, isso reduz a responsabilidade? Ou apenas muda a forma racional de responder a ela?</p></div>
+      <div class="card"><h3>2. Determinismo destrói a ética?</h3><p>Uma sociedade sem livre-arbítrio metafísico ainda pode ter normas, prevenção, educação, cuidado e proteção?</p></div>
+      <div class="card"><h3>3. Quem é o agente?</h3><p>Até que ponto faz sentido atribuir uma ação exclusivamente ao indivíduo quando sua formação envolve redes biológicas, culturais e materiais?</p></div>
+      <div class="card"><h3>4. Podemos redesenhar contextos?</h3><p>Se contextos alteram probabilidades de comportamento, a política e a tecnologia podem ser pensadas como engenharia de condições de possibilidade?</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="resumo">
+  <div class="wrap">
+    <div class="section-head"><div class="num">13</div><div><h2>A tese em 30 segundos</h2></div></div>
+    <p class="quoteish">Nenhum comportamento humano nasce no instante em que acontece. Ele condensa uma história: cérebro, corpo, aprendizagem, desenvolvimento, genes, cultura e evolução. Entender a ação é reconstruir essa história — e resistir à tentação de uma causa única.<small>Síntese didática de <em>Behave</em>.</small></p>
+  </div>
+</section>
+
+<section class="alt" id="fontes">
+  <div class="wrap">
+    <div class="section-head"><div class="num">14</div><div><h2>Referências e fontes</h2><p class="lead">Para aprofundamento e para uso acadêmico da aula.</p></div></div>
+    <ol class="sources">
+      <li>SAPOLSKY, Robert M. <strong>Behave: The Biology of Humans at Our Best and Worst</strong>. New York: Penguin Press, 2017.</li>
+      <li>Penguin Random House. <a href="https://www.penguinrandomhouse.com/books/311787/behave-by-robert-m-sapolsky/" target="_blank" rel="noopener">Página editorial de <em>Behave</em></a>.</li>
+      <li>Stanford Report. <a href="https://news.stanford.edu/stories/2017/05/biologist-robert-sapolsky-takes-human-behavior-free-will" target="_blank" rel="noopener">“Stanford biologist Robert Sapolsky ponders the best and worst of us, plus free will”</a>, 8 maio 2017.</li>
+      <li>Wu Tsai Neurosciences Institute, Stanford. <a href="https://neuroscience.stanford.edu/news/how-live-world-without-free-will" target="_blank" rel="noopener">“How to live in a world without free will”</a>, 5 dez. 2024.</li>
+      <li>SAPOLSKY, Robert M. <strong>Determined: A Science of Life Without Free Will</strong>. New York: Penguin Press, 2023.</li>
+    </ol>
+    <div class="note"><strong>Nota pedagógica:</strong> os diagramas desta página são ilustrações esquemáticas produzidas para ensino. Não devem ser usados como diagramas anatômicos ou clínicos.</div>
+  </div>
+</section>
+
+<footer><div class="wrap">Aula interativa sobre <em>Behave</em> • arquivo HTML autocontido • navegação, tela cheia e impressão/PDF integradas</div></footer>
+
+<script>
+const levels=[
+ {t:'1 segundo antes',s:'atividade neural',title:'Neurônios em ação',text:'Circuitos ligados a ameaça, recompensa, memória, hábito e controle estão em determinados estados antes da ação. O comportamento não nasce “do nada” no instante da escolha.',q:'Pergunta: que padrões neurais estavam ativos imediatamente antes?',v:'brain'},
+ {t:'Segundos–minutos',s:'percepção e contexto',title:'O que acabou de acontecer?',text:'Expressões faciais, palavras, cheiro, ruído, presença de aliados ou rivais e a interpretação desses sinais mudam a resposta provável.',q:'Pergunta: o estímulo foi apenas percebido — ou interpretado à luz de uma história?',v:'eye'},
+ {t:'Horas–dias',s:'estado corporal',title:'O organismo chegou cansado, faminto, estressado?',text:'Sono, fome, dor, estresse, hormônios e substâncias alteram limiares de atenção, impulsividade, vigilância e motivação.',q:'Pergunta: que estado fisiológico preparou o terreno?',v:'body'},
+ {t:'Meses–anos',s:'aprendizagem',title:'Hábitos têm história',text:'Repetição, reforço, punição, experiências e aprendizagem remodelam respostas. O que parece “espontâneo” pode ser um padrão longamente treinado.',q:'Pergunta: que experiências fizeram essa resposta se tornar familiar?',v:'path'},
+ {t:'Infância',s:'desenvolvimento',title:'O cérebro em formação',text:'Vínculos, adversidades, nutrição, segurança e socialização participam da construção de sistemas de estresse, apego, confiança e autorregulação.',q:'Pergunta: como o ambiente de desenvolvimento alterou as probabilidades futuras?',v:'child'},
+ {t:'Adolescência',s:'maturação e pares',title:'Risco, status e cérebro social',text:'Mudanças no cérebro, sensibilidade a recompensa, status e presença de pares tornam certas decisões especialmente contextuais.',q:'Pergunta: como a presença do grupo muda o que parece valer a pena?',v:'group'},
+ {t:'Vida fetal',s:'desenvolvimento pré-natal',title:'Antes do nascimento',text:'O ambiente intrauterino participa do desenvolvimento. Biologia é história de desenvolvimento, não um programa isolado que simplesmente “executa genes”.',q:'Pergunta: que condições precederam até mesmo a experiência consciente?',v:'cell'},
+ {t:'Gerações',s:'genes e regulação',title:'Genes não são destino',text:'Variações genéticas influenciam sistemas biológicos, mas seus efeitos dependem de ambiente, desenvolvimento e interação com muitos outros genes.',q:'Pergunta: que predisposições existem — e em que ambientes elas se expressam?',v:'dna'},
+ {t:'Séculos',s:'cultura e instituições',title:'O comportamento também tem história social',text:'Normas, instituições, religião, economia, linguagem e hierarquias definem categorias, incentivos e justificações antes de um indivíduo nascer.',q:'Pergunta: que ordem social tornou esta ação pensável, premiada ou proibida?',v:'city'},
+ {t:'Milhões de anos',s:'evolução',title:'Arquiteturas muito antigas',text:'Seleção natural moldou sistemas para vínculo, ameaça, competição, cooperação e cuidado. Evolução oferece repertórios; contexto ajuda a decidir qual repertório será mobilizado.',q:'Pergunta: que problemas antigos ajudaram a moldar a arquitetura atual?',v:'evo'}
+];
+const timeline=document.getElementById('timeline');
+levels.forEach((x,i)=>{const b=document.createElement('button');b.className='timebtn'+(i===0?' active':'');b.innerHTML=`<b>${i+1}</b><span><strong>${x.t}</strong><small>${x.s}</small></span>`;b.onclick=()=>showLevel(i);timeline.appendChild(b)});
+function iconSvg(type){
+ const common='viewBox="0 0 520 220" class="svgbox" aria-hidden="true"';
+ const map={
+ brain:`<svg ${common}><path d="M105 115C86 58 142 24 208 34c49-24 117-5 137 36 55 2 87 50 62 91-23 37-67 38-105 24-39 31-95 29-126 4-55 18-109-10-104-55-26-3-37-29-22-48 14-17 34-14 55-11Z" fill="#eadfd1" stroke="#6a7174" stroke-width="5"/><circle cx="270" cy="123" r="18" fill="#b64b45"/><path d="M135 94c30-41 74-53 107-42-2 43-29 75-72 82-17-9-29-23-35-40Z" fill="#ce704b"/></svg>`,
+ eye:`<svg ${common}><path d="M70 110Q260 15 450 110Q260 205 70 110Z" fill="#fff" stroke="#5d6468" stroke-width="6"/><circle cx="260" cy="110" r="56" fill="#77968b"/><circle cx="260" cy="110" r="23" fill="#1e2428"/><circle cx="240" cy="88" r="9" fill="#fff"/><path d="M40 110h-25M480 110h25M260 18V0M260 220v-18" stroke="#cf6b3d" stroke-width="7" stroke-linecap="round"/></svg>`,
+ body:`<svg ${common}><circle cx="260" cy="47" r="28" fill="#d8ab8c"/><path d="M230 78q30-17 60 0l29 74-31 10-9 55h-38l-9-55-31-10Z" fill="#6d858b"/><path d="M229 97l-58 51M291 97l58 51" stroke="#d8ab8c" stroke-width="18" stroke-linecap="round"/><path d="M260 90c38 23 44 58 0 99-44-41-38-76 0-99Z" fill="#bd4c46" opacity=".9"/><path d="M375 52c48 28 48 88 0 116-48-28-48-88 0-116Z" fill="none" stroke="#c79a41" stroke-width="8"/><path d="M375 76v37l22 14" stroke="#c79a41" stroke-width="7" stroke-linecap="round"/></svg>`,
+ path:`<svg ${common}><path d="M37 176C109 150 123 74 198 83s86 76 145 43 79-72 139-78" fill="none" stroke="#c7a05d" stroke-width="28" stroke-linecap="round"/><circle cx="40" cy="176" r="13" fill="#cf6b3d"/><circle cx="480" cy="48" r="13" fill="#587b6d"/><path d="M72 46h110M72 69h80M330 168h120M351 191h99" stroke="#6a7174" stroke-width="8" stroke-linecap="round" opacity=".5"/></svg>`,
+ child:`<svg ${common}><circle cx="235" cy="57" r="31" fill="#e0b18d"/><path d="M205 90q30-18 60 0l18 65-32 12-3 50h-26l-3-50-32-12Z" fill="#7b99a5"/><circle cx="341" cy="92" r="44" fill="#f0d58d"/><path d="M325 92h32M341 76v32" stroke="#8c6b2f" stroke-width="7" stroke-linecap="round"/><path d="M118 187c39-71 99-78 150-37" fill="none" stroke="#78a47f" stroke-width="11" stroke-linecap="round"/></svg>`,
+ group:`<svg ${common}>${[145,220,300,375].map((x,i)=>`<circle cx="${x}" cy="72" r="25" fill="${i==1?'#cf6b3d':'#80919a'}"/><path d="M${x-34} 151q34-62 68 0" fill="none" stroke="${i==1?'#cf6b3d':'#80919a'}" stroke-width="26" stroke-linecap="round"/>`).join('')}<path d="M70 188h380" stroke="#c7a05d" stroke-width="8" stroke-linecap="round"/></svg>`,
+ cell:`<svg ${common}><circle cx="260" cy="110" r="82" fill="#f5e6d9" stroke="#c87957" stroke-width="8"/><circle cx="260" cy="110" r="33" fill="#7b978b"/><circle cx="170" cy="61" r="17" fill="#d5a343" opacity=".7"/><circle cx="352" cy="155" r="22" fill="#d5a343" opacity=".5"/><path d="M260 28c-33 20-46 46-44 78 3 37 29 61 73 76" fill="none" stroke="#aa5550" stroke-width="5" stroke-dasharray="8 9"/></svg>`,
+ dna:`<svg ${common}><path d="M160 22c155 37 45 150 200 176M360 22C205 59 315 172 160 198" fill="none" stroke="#cf6b3d" stroke-width="9"/><g stroke="#587b6d" stroke-width="6">${[42,70,98,126,154,182].map((y,i)=>`<line x1="${178+i*9}" y1="${y}" x2="${342-i*9}" y2="${y}"/>`).join('')}</g></svg>`,
+ city:`<svg ${common}><path d="M58 188h405" stroke="#5d6468" stroke-width="8"/><path d="M85 188V91h75v97M178 188V48h91v140M289 188V103h62v85M370 188V65h68v123" fill="none" stroke="#7f8f93" stroke-width="14"/><path d="M207 48l17-29 17 29M405 65V28" stroke="#c87957" stroke-width="8"/><g fill="#d1a244">${[[110,115],[110,145],[210,80],[240,80],[210,115],[240,115],[306,128],[398,92],[417,92],[398,128],[417,128]].map(p=>`<rect x="${p[0]}" y="${p[1]}" width="12" height="13" rx="2"/>`).join('')}</g></svg>`,
+ evo:`<svg ${common}><g fill="#596568">${[[90,145,18],[155,128,23],[230,105,29],[315,79,35],[410,52,41]].map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]-55}" r="${p[2]*.55}"/><path d="M${p[0]-p[2]*.5} ${p[1]-35}q${p[2]*.5-0} -15 ${p[2]} 0l${p[2]*.3} 54h-${p[2]*.25}l-${p[2]*.2} 42h-${p[2]*.3}l-${p[2]*.2}-42h-${p[2]*.3}Z"/>`).join('')}</g><path d="M50 190c95 5 164-19 228-58S392 59 468 47" fill="none" stroke="#c79a41" stroke-width="7" stroke-dasharray="10 9"/></svg>`
+ };return map[type]||map.brain;
+}
+function showLevel(i){document.querySelectorAll('.timebtn').forEach((b,j)=>b.classList.toggle('active',i===j));const x=levels[i];ptime.textContent=x.t;ptitle.textContent=x.title;ptext.textContent=x.text;pquestion.textContent=x.q;pvisual.innerHTML=iconSvg(x.v)}
+showLevel(0);
+const groupData={rival:['“Eles”','A categoria competitiva pode tornar diferenças mais salientes e favorecer leitura hostil de sinais ambíguos.'],colega:['“Um de nós”','Uma identidade compartilhada muda expectativas de confiança, cooperação e reciprocidade.'],vizinho:['“Precisamos uns dos outros”','Uma ameaça comum pode tornar secundária uma fronteira que minutos antes parecia importante.'],humano:['“Uma pessoa”','Quando uma categoria mais ampla se torna saliente, o repertório moral pode ultrapassar fronteiras locais de grupo.']};
+document.querySelectorAll('.groupbtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.groupbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');const d=groupData[b.dataset.g];gtitle.textContent=d[0];gtext.textContent=d[1]});
+function reveal(btn){btn.closest('.q').querySelector('.answer').classList.toggle('show');btn.textContent=btn.closest('.q').querySelector('.answer').classList.contains('show')?'Ocultar resposta':'Mostrar resposta'}
+function toggleDark(){document.body.classList.toggle('dark')}
+let fs=18;function changeFont(d){fs=Math.max(15,Math.min(24,fs+d));document.documentElement.style.setProperty('--fs',fs+'px')}
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(scrollY/h*100)+'%'});
+</script>
+</body>
+</html>
