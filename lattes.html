@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Análise Estratégica do Currículo Lattes — Maurício Fernando Bozatski</title>
+<style>
+:root{
+  --bg:#0b0f14; --panel:#121922; --panel2:#0f151d; --text:#e9eef5; --muted:#98a6b8;
+  --line:#253244; --accent:#d7b56d; --accent2:#6fa3ff; --good:#74d69c; --warn:#f0c674; --risk:#ef8f8f;
+  --shadow:0 18px 60px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#090d12,#0e141c 35%,#0b1017);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.55}
+a{color:inherit}
+.container{max-width:1220px;margin:auto;padding:0 24px}
+.hero{padding:64px 0 34px;border-bottom:1px solid var(--line);background:
+radial-gradient(circle at 15% 20%,rgba(215,181,109,.13),transparent 34%),
+radial-gradient(circle at 85% 10%,rgba(111,163,255,.08),transparent 30%)}
+.kicker{letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-size:.78rem;font-weight:700}
+h1{font-size:clamp(2.2rem,5vw,4.6rem);line-height:1.02;margin:.3rem 0 1rem;max-width:980px}
+.subtitle{max-width:870px;color:#bdc8d6;font-size:1.07rem}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.pill{border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:999px;padding:7px 11px;color:#b8c4d3;font-size:.84rem}
+section{padding:34px 0}
+.grid{display:grid;gap:18px}
+.kpis{grid-template-columns:repeat(5,1fr)}
+.card{background:linear-gradient(180deg,rgba(18,25,34,.98),rgba(15,21,29,.98));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.kpi .label{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
+.kpi .value{font-size:2.1rem;font-weight:800;margin-top:6px}
+.kpi .note{color:#afbccb;font-size:.86rem;margin-top:3px}
+.score-ring{width:134px;height:134px;border-radius:50%;display:grid;place-items:center;margin:auto;background:conic-gradient(var(--accent) 0deg 291.6deg,#243143 291.6deg 360deg);position:relative}
+.score-ring:after{content:"";position:absolute;width:102px;height:102px;background:var(--panel);border-radius:50%}
+.score-ring span{position:relative;z-index:2;font-size:2.2rem;font-weight:900}.score-ring small{font-size:.8rem;color:var(--muted)}
+.two{grid-template-columns:1.05fr .95fr}.three{grid-template-columns:repeat(3,1fr)}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}
+.section-title h2{margin:0;font-size:1.65rem}.section-title p{margin:0;color:var(--muted);font-size:.9rem;max-width:620px}
+.radar-wrap{display:grid;grid-template-columns:minmax(340px,1fr) 310px;gap:20px;align-items:center}
+#radar{width:100%;min-height:430px}
+.legend{display:grid;gap:9px}
+.legend-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px 0;border-bottom:1px dashed #263243}
+.legend-row b{font-size:.93rem}.legend-row span{color:var(--accent);font-weight:800}
+.mini{color:var(--muted);font-size:.78rem}
+.barlist{display:grid;gap:12px}
+.baritem{display:grid;grid-template-columns:220px 1fr 46px;align-items:center;gap:12px}
+.track{height:11px;background:#212d3c;border-radius:999px;overflow:hidden}
+.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.scoretag{font-weight:800;text-align:right}
+.callout{padding:16px 18px;border-left:3px solid var(--accent);background:rgba(215,181,109,.06);border-radius:4px 14px 14px 4px;color:#d8e0ea}
+.table{width:100%;border-collapse:collapse;font-size:.92rem}
+.table th,.table td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.table th{color:#aebdce;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+.good{color:var(--good)}.warn{color:var(--warn)}.risk{color:var(--risk)}
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.swot .box{padding:16px;border-radius:14px;border:1px solid var(--line);background:#101720}
+.swot h3{margin:0 0 8px;font-size:1rem}.swot p{margin:.25rem 0;color:#bcc8d6;font-size:.91rem}
+.priority{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)}
+.num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#1c2736;color:var(--accent);font-weight:800}
+.impact{font-size:.78rem;border:1px solid var(--line);border-radius:999px;padding:5px 8px;color:#c5d0dd;white-space:nowrap}
+.scenario-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+button{border:1px solid var(--line);background:#121b26;color:#dce4ee;padding:9px 13px;border-radius:10px;cursor:pointer;font-weight:700}
+button.active{background:var(--accent);color:#15110a;border-color:var(--accent)}
+.proj-grid{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:center}
+.bigscore{font-size:4.8rem;font-weight:900;line-height:1}.bigscore small{font-size:1rem;color:var(--muted)}
+.delta{font-weight:800;color:var(--good)}
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.chk{border:1px solid var(--line);border-radius:12px;padding:12px;background:#101720}
+.chk input{accent-color:#d7b56d;margin-right:8px}
+.timeline{position:relative;padding-left:22px}
+.timeline:before{content:"";position:absolute;left:6px;top:5px;bottom:5px;width:2px;background:#2c3a4d}
+.titem{position:relative;margin-bottom:17px}
+.titem:before{content:"";position:absolute;left:-21px;top:7px;width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 4px #17212d}
+.titem b{display:block}.titem span{color:var(--muted);font-size:.88rem}
+.footer{padding:34px 0 60px;color:#8e9cac;font-size:.83rem;border-top:1px solid var(--line)}
+.note-box{font-size:.84rem;color:#aeb9c8;padding:13px 14px;border:1px dashed #34455b;border-radius:12px;background:rgba(255,255,255,.015)}
+.printbar{position:fixed;right:18px;bottom:18px;z-index:20}
+@media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.two,.three,.radar-wrap,.proj-grid{grid-template-columns:1fr}.baritem{grid-template-columns:150px 1fr 42px}.checks{grid-template-columns:1fr}}
+@media(max-width:600px){.kpis{grid-template-columns:1fr}.swot{grid-template-columns:1fr}.container{padding:0 15px}.hero{padding-top:42px}h1{font-size:2.5rem}.baritem{grid-template-columns:1fr 44px}.baritem .track{grid-column:1/3}.priority{grid-template-columns:42px 1fr}.impact{grid-column:2}.printbar{display:none}}
+@media print{body{background:white;color:#111}.hero,.card{background:white;color:#111;box-shadow:none}.card{border-color:#ccc}.subtitle,.note,.mini,.section-title p,.footer,.titem span{color:#444}.printbar{display:none}.pill{color:#333;border-color:#bbb}.table th{color:#333}.track{background:#ddd}.callout{color:#222}.swot p{color:#333}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Diagnóstico estratégico • Currículo Lattes</div>
+    <h1>Maurício Fernando Bozatski</h1>
+    <div class="subtitle">Leitura estratégica do currículo em 06/10/2026, convertendo evidências do Lattes em indicadores comparáveis, gargalos e cenários de crescimento. O foco não é “contar itens”, mas medir força acadêmica, coerência, liderança, internacionalização e capacidade de conversão em reputação científica.</div>
+    <div class="meta">
+      <span class="pill">Professor Associado • UFMT</span>
+      <span class="pill">Filosofia da Tecnologia • Filosofia da Ciência • IA</span>
+      <span class="pill">Projeto-síntese: Tecnosciência</span>
+      <span class="pill">Modelo analítico próprio — não oficial CAPES/CNPq</span>
+    </div>
+  </div>
+</div>
+
+<main>
+<section>
+<div class="container">
+  <div class="grid kpis">
+    <div class="card kpi"><div class="label">Índice Estratégico Lattes</div><div class="value">81/100</div><div class="note">Muito competitivo; principal margem está em pesquisa de alto impacto e orientações concluídas.</div></div>
+    <div class="card kpi"><div class="label">Produção peer-reviewed</div><div class="value">10 + 1</div><div class="note">10 artigos publicados + 1 aceito para publicação.</div></div>
+    <div class="card kpi"><div class="label">Livros / capítulos</div><div class="value">8 / 5</div><div class="note">Inclui obra autoral recente, tradução e produção didática.</div></div>
+    <div class="card kpi"><div class="label">Orientações ativas</div><div class="value">5</div><div class="note">2 mestrados, 1 doutorado, 1 TCC e 1 orientação de outra natureza.</div></div>
+    <div class="card kpi"><div class="label">Produção didática</div><div class="value">55</div><div class="note">Volume excepcional de materiais didáticos/instrucionais.</div></div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container grid two">
+  <div class="card">
+    <div class="section-title"><div><h2>Leitura executiva</h2><p>O que o currículo comunica em uma seleção, credenciamento, pós-doc, promoção ou edital.</p></div></div>
+    <div class="callout"><b>Diagnóstico central:</b> o currículo já transmite senioridade institucional, liderança e identidade temática clara. O ponto fraco não é falta de atividade — é a conversão de uma trajetória muito ampla em sinais científicos de maior peso marginal: artigos internacionais de alto estrato, orientação pós-graduada concluída, financiamento competitivo e redes internacionais recentes.</div>
+    <div style="height:14px"></div>
+    <table class="table">
+      <tr><th>Eixo</th><th>Sinal transmitido</th><th>Leitura</th></tr>
+      <tr><td>Identidade científica</td><td>Tecnologia → pós-fenomenologia → tecnociência/IA/ambiente</td><td class="good"><b>Forte</b></td></tr>
+      <tr><td>Trajetória</td><td>Universidade, gestão, pesquisa, extensão e comunicação</td><td class="good"><b>Muito forte</b></td></tr>
+      <tr><td>Produção recente</td><td>Retomada clara em 2025–2026</td><td class="good"><b>Acelerando</b></td></tr>
+      <tr><td>Orientação stricto sensu</td><td>Entrada forte, mas ainda sem ciclo completo</td><td class="warn"><b>Em consolidação</b></td></tr>
+      <tr><td>Internacionalização recente</td><td>Base histórica boa; precisa de atualização visível</td><td class="warn"><b>Subexplorada</b></td></tr>
+      <tr><td>Financiamento</td><td>Não aparece como eixo competitivo recente</td><td class="risk"><b>Gargalo</b></td></tr>
+    </table>
+  </div>
+  <div class="card" style="display:grid;place-items:center">
+    <div>
+      <div class="score-ring"><span>81<small>/100</small></span></div>
+      <div style="text-align:center;margin-top:14px;font-weight:800;font-size:1.1rem">Muito competitivo</div>
+      <div style="text-align:center;color:var(--muted);font-size:.86rem;max-width:310px;margin-top:4px">Pontuação interna ponderada. Não substitui critérios formais de CAPES, CNPq, CPPD ou editais.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="card">
+    <div class="section-title"><div><h2>Radar estratégico</h2><p>Oito dimensões avaliadas de 0 a 100. Passe o mouse sobre os pontos para ver a nota.</p></div></div>
+    <div class="radar-wrap">
+      <svg id="radar" viewBox="0 0 560 500" role="img" aria-label="Radar estratégico do currículo"></svg>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container grid two">
+  <div class="card">
+    <div class="section-title"><div><h2>Decomposição da nota</h2><p>Quanto cada dimensão contribui para o índice geral.</p></div></div>
+    <div class="barlist" id="barlist"></div>
+    <div class="note-box" style="margin-top:14px">Pesos: produção 20%; momentum 10%; formação/orientação 15%; coerência de pesquisa 15%; liderança 15%; internacionalização 10%; rede/reconhecimento 7%; impacto técnico-social 8%.</div>
+  </div>
+  <div class="card">
+    <div class="section-title"><div><h2>Parâmetros objetivos do Lattes</h2><p>Totais informados no próprio currículo.</p></div></div>
+    <table class="table">
+      <tr><th>Indicador</th><th>Total</th></tr>
+      <tr><td>Artigos completos publicados</td><td><b>10</b></td></tr>
+      <tr><td>Artigo aceito</td><td><b>1</b></td></tr>
+      <tr><td>Livros publicados</td><td><b>8</b></td></tr>
+      <tr><td>Capítulos de livros</td><td><b>5</b></td></tr>
+      <tr><td>Trabalhos em anais</td><td><b>17</b></td></tr>
+      <tr><td>Materiais didáticos/instrucionais</td><td><b>55</b></td></tr>
+      <tr><td>Pareceres técnicos</td><td><b>12</b></td></tr>
+      <tr><td>Participações em eventos</td><td><b>36</b></td></tr>
+      <tr><td>Organizações de eventos</td><td><b>18</b></td></tr>
+      <tr><td>Bancas de conclusão</td><td><b>13</b></td></tr>
+      <tr><td>Orientações em andamento</td><td><b>5</b></td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="section-title"><div><h2>Pontos fortes e fragilidades</h2><p>O que hoje aumenta — ou limita — o valor estratégico do currículo.</p></div></div>
+  <div class="swot">
+    <div class="box"><h3 class="good">1. Liderança acadêmica e institucional</h3><p>Coordenação de curso, presidência de colegiado e NDE, experiência prévia de alta gestão e atuação editorial formam um perfil de senioridade raro. Isso é forte para cargos, promoção, gestão universitária e construção de redes.</p></div>
+    <div class="box"><h3 class="risk">1. Pouca orientação stricto sensu concluída</h3><p>Há 2 mestrados e 1 doutorado em andamento, mas o Lattes ainda não mostra a formação de mestres/doutores concluída. Para perfil de PPG e titularidade acadêmica, esse é o principal gargalo estrutural.</p></div>
+    <div class="box"><h3 class="good">2. Coerência temática crescente</h3><p>O projeto <b>Tecnociência</b> organiza IA, mediação tecnológica, tecnosfera/biosfera, ambiente e alimentação em um eixo claro, com 18 estudantes envolvidos e produção vinculada. Isso reduz dispersão e melhora a legibilidade científica.</p></div>
+    <div class="box"><h3 class="risk">2. Qualidade de veículo pesa mais que quantidade</h3><p>O currículo tem produção, mas o ganho marginal agora virá menos de “mais itens” e mais de 2–4 artigos em periódicos internacionais fortemente indexados e reconhecidos na área.</p></div>
+    <div class="box"><h3 class="good">3. Produção técnica e impacto formativo excepcionais</h3><p>55 materiais didáticos, projetos de extensão e desenvolvimento tecnológico, comunicação pública e editoração demonstram capacidade de transformar conhecimento em produtos, processos e formação.</p></div>
+    <div class="box"><h3 class="risk">3. Internacionalização precisa voltar ao presente</h3><p>Há histórico internacional relevante e artigo em inglês aceito em 2026, mas o currículo ganharia muito com coautoria internacional, visita/pós-doc, projeto conjunto e apresentações internacionais recentes.</p></div>
+    <div class="box"><h3 class="good">4. Momentum 2025–2026</h3><p>Dois artigos em 2025, artigo em 2026, livro autoral, capítulo, artigo em inglês aceito, novo projeto de pesquisa e entrada em orientação de pós-graduação indicam uma fase de aceleração real.</p></div>
+    <div class="box"><h3 class="risk">4. Financiamento competitivo pouco visível</h3><p>O Lattes não projeta, neste momento, uma linha recente clara de bolsas/projetos financiados por agências. Uma aprovação externa teria alto valor reputacional e sinalizaria autonomia de pesquisa.</p></div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container grid two">
+  <div class="card">
+    <div class="section-title"><div><h2>Valor estratégico por objetivo</h2><p>Estimativa de aderência do currículo atual a diferentes metas acadêmicas.</p></div></div>
+    <div class="barlist" id="goalbars"></div>
+  </div>
+  <div class="card">
+    <div class="section-title"><div><h2>Onde investir esforço</h2><p>Retorno marginal esperado sobre o currículo.</p></div></div>
+    <div class="priority"><div class="num">1</div><div><b>Artigos internacionais de alto impacto</b><div class="mini">Transformar a atual agenda Tecnosciência/IA em 2–3 artigos fortes, preferencialmente em inglês e com indexação robusta.</div></div><span class="impact">impacto muito alto</span></div>
+    <div class="priority"><div class="num">2</div><div><b>Concluir orientações stricto sensu</b><div class="mini">A primeira dissertação defendida altera qualitativamente a leitura do currículo; a primeira tese orientada altera ainda mais.</div></div><span class="impact">impacto muito alto</span></div>
+    <div class="priority"><div class="num">3</div><div><b>Financiamento externo</b><div class="mini">Submeter Tecnociência a CNPq/FAPEMAT/CAPES e converter o projeto-guarda-chuva em infraestrutura formal de pesquisa.</div></div><span class="impact">impacto alto</span></div>
+    <div class="priority"><div class="num">4</div><div><b>Internacionalização 2027</b><div class="mini">Pós-doc/visiting, coautoria, seminário internacional e parceria institucional atualizam um ativo que já existe historicamente.</div></div><span class="impact">impacto alto</span></div>
+    <div class="priority"><div class="num">5</div><div><b>Menos dispersão, mais assinatura intelectual</b><div class="mini">Vincular livros, artigos, orientações e extensão explicitamente ao eixo Tecnociência para que o conjunto pareça programa de pesquisa — não soma de atividades.</div></div><span class="impact">impacto alto</span></div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="card">
+    <div class="section-title"><div><h2>Simulador de projeção</h2><p>Veja como ações estratégicas podem mudar o índice. Os incrementos são heurísticos e servem para priorização, não para prever avaliação formal.</p></div></div>
+    <div class="proj-grid">
+      <div>
+        <div class="bigscore"><span id="simScore">81</span><small>/100</small></div>
+        <div id="simDelta" class="delta">cenário atual</div>
+      </div>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-add="3.2"> 2 artigos internacionais fortes (+3,2)</label>
+        <label class="chk"><input type="checkbox" data-add="2.5"> 1 mestrado concluído (+2,5)</label>
+        <label class="chk"><input type="checkbox" data-add="1.7"> 1 projeto financiado (+1,7)</label>
+        <label class="chk"><input type="checkbox" data-add="2.1"> pós-doc/visiting internacional (+2,1)</label>
+        <label class="chk"><input type="checkbox" data-add="1.4"> coautoria internacional recorrente (+1,4)</label>
+        <label class="chk"><input type="checkbox" data-add="1.8"> 1 tese concluída (+1,8)</label>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container grid two">
+  <div class="card">
+    <div class="section-title"><div><h2>Cenários 2026 → 2028</h2><p>Projeção por maturação do portfólio.</p></div></div>
+    <div class="scenario-buttons">
+      <button class="active" data-scenario="atual">Atual</button>
+      <button data-scenario="2027">Meta 2027</button>
+      <button data-scenario="2028">Meta 2028</button>
+    </div>
+    <div id="scenarioText" class="callout"></div>
+    <div style="height:14px"></div>
+    <div class="barlist" id="scenarioBars"></div>
+  </div>
+  <div class="card">
+    <div class="section-title"><div><h2>Trajetória que o currículo conta</h2><p>Leitura narrativa útil para memorial, promoção, pós-doc ou apresentação institucional.</p></div></div>
+    <div class="timeline">
+      <div class="titem"><b>2002–2009 • Formação e experimentação</b><span>IC, Wittgenstein, bioética, docência básica/superior, primeiros artigos, eventos e livros didáticos.</span></div>
+      <div class="titem"><b>2010–2015 • Construção institucional</b><span>UFFS, coordenação de curso, assuntos estudantis, internacionalização, grandes projetos e presença em 4S/SPEP.</span></div>
+      <div class="titem"><b>2014–2020 • Consolidação em filosofia da tecnologia</b><span>Doutorado, Don Ihde, tradução, pós-fenomenologia, artigo “O que as tecnologias fazem”.</span></div>
+      <div class="titem"><b>2020–2025 • Gestão, comunicação e extensão</b><span>PRACTICE, PodUFFS, diretoria de comunicação, HortoSapiens e ampliação da dimensão socioambiental.</span></div>
+      <div class="titem"><b>2025–2026 • Reaceleração científica na UFMT</b><span>PPG, orientações stricto sensu, Tecnociência, Oka, Ecótono, livro autoral, artigos ambiente/tecnosfera e agência artificial.</span></div>
+      <div class="titem"><b>2027–2028 • Janela de salto qualitativo</b><span>Se a produção recente for convertida em periódicos fortes, orientação concluída, financiamento e internacionalização, o currículo muda de “muito competitivo” para “altamente consolidado”.</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="card">
+    <div class="section-title"><div><h2>Plano de ataque em 12 meses</h2><p>Prioridades ordenadas por retorno acadêmico e factibilidade.</p></div></div>
+    <table class="table">
+      <tr><th>Janela</th><th>Ação</th><th>Indicador de sucesso</th><th>Efeito estratégico</th></tr>
+      <tr><td>0–3 meses</td><td>Submeter 1 artigo internacional forte derivado de Tecnociência/IA</td><td>1 submissão em periódico de alta aderência</td><td>Reposiciona produção científica</td></tr>
+      <tr><td>0–6 meses</td><td>Formalizar rede do projeto Tecnociência</td><td>grupo/parceria + produção vinculada</td><td>Coerência e rede</td></tr>
+      <tr><td>0–6 meses</td><td>Submeter financiamento</td><td>1 proposta CNPq/FAPEMAT/CAPES</td><td>Autonomia e reputação</td></tr>
+      <tr><td>3–9 meses</td><td>Internacionalização concreta</td><td>visiting/pós-doc/coautoria/evento</td><td>Atualiza capital internacional</td></tr>
+      <tr><td>6–12 meses</td><td>Concluir primeira orientação de mestrado</td><td>defesa concluída</td><td>Remove o maior gap atual</td></tr>
+      <tr><td>6–12 meses</td><td>Segundo artigo internacional</td><td>2 artigos submetidos/aceitos no ciclo</td><td>Cria recorrência, não evento isolado</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="note-box"><b>Metodologia.</b> O “Índice Estratégico Lattes” é uma heurística construída para este diagnóstico. Ele combina volume, atualidade, coerência, posição de liderança, formação de recursos humanos, internacionalização, rede e impacto técnico-social. Não reproduz planilhas de nenhuma área CAPES nem regras de progressão/titularidade. Onde o Lattes não traz métricas bibliométricas, estrato do periódico ou financiamento, a análise evita presumir esses dados.</div>
+</div>
+</section>
+</main>
+
+<div class="printbar"><button onclick="window.print()">Imprimir / salvar PDF</button></div>
+<footer class="footer"><div class="container">Fonte primária: Currículo Lattes de Maurício Fernando Bozatski, atualizado em 06/10/2026. Painel gerado para análise estratégica individual.</div></footer>
+
+<script>
+const dimensions = [
+ {name:"Produção bibliográfica", score:74, weight:20},
+ {name:"Momentum recente", score:91, weight:10},
+ {name:"Formação / orientação", score:62, weight:15},
+ {name:"Coerência de pesquisa", score:88, weight:15},
+ {name:"Liderança acadêmica", score:96, weight:15},
+ {name:"Internacionalização", score:69, weight:10},
+ {name:"Rede / reconhecimento", score:77, weight:7},
+ {name:"Impacto técnico-social", score:95, weight:8}
+];
+
+function drawRadar(data){
+ const svg=document.getElementById("radar"); svg.innerHTML="";
+ const cx=280,cy=245,R=180,n=data.length;
+ const NS="http://www.w3.org/2000/svg";
+ const pt=(r,i)=>{const a=(-Math.PI/2)+(i*2*Math.PI/n);return [cx+Math.cos(a)*r,cy+Math.sin(a)*r]};
+ for(let level=20;level<=100;level+=20){
+   const poly=document.createElementNS(NS,"polygon");
+   poly.setAttribute("points",data.map((_,i)=>pt(R*level/100,i).join(",")).join(" "));
+   poly.setAttribute("fill","none"); poly.setAttribute("stroke","#263547"); poly.setAttribute("stroke-width","1");
+   svg.appendChild(poly);
+   const lab=document.createElementNS(NS,"text"); lab.setAttribute("x",cx+4);lab.setAttribute("y",cy-R*level/100+13);
+   lab.setAttribute("fill","#617086");lab.setAttribute("font-size","10");lab.textContent=level;svg.appendChild(lab);
+ }
+ data.forEach((d,i)=>{
+   const [x,y]=pt(R,i); const line=document.createElementNS(NS,"line");
+   line.setAttribute("x1",cx);line.setAttribute("y1",cy);line.setAttribute("x2",x);line.setAttribute("y2",y);line.setAttribute("stroke","#263547");svg.appendChild(line);
+   const [lx,ly]=pt(R+32,i); const t=document.createElementNS(NS,"text");
+   t.setAttribute("x",lx);t.setAttribute("y",ly);t.setAttribute("fill","#b9c6d5");t.setAttribute("font-size","11");t.setAttribute("font-weight","650");
+   t.setAttribute("text-anchor",lx<cx-20?"end":lx>cx+20?"start":"middle");t.textContent=d.name;svg.appendChild(t);
+ });
+ const area=document.createElementNS(NS,"polygon");
+ area.setAttribute("points",data.map((d,i)=>pt(R*d.score/100,i).join(",")).join(" "));
+ area.setAttribute("fill","rgba(215,181,109,.18)");area.setAttribute("stroke","#d7b56d");area.setAttribute("stroke-width","2.4");svg.appendChild(area);
+ data.forEach((d,i)=>{
+   const [x,y]=pt(R*d.score/100,i); const c=document.createElementNS(NS,"circle");
+   c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r","5");c.setAttribute("fill","#d7b56d");c.setAttribute("tabindex","0");
+   const title=document.createElementNS(NS,"title"); title.textContent=`${d.name}: ${d.score}/100`; c.appendChild(title);svg.appendChild(c);
+ });
+}
+function renderLegend(){
+ document.getElementById("legend").innerHTML=dimensions.map(d=>`<div class="legend-row"><div><b>${d.name}</b><div class="mini">peso ${d.weight}%</div></div><span>${d.score}</span></div>`).join("");
+}
+function renderBars(id, data){
+ document.getElementById(id).innerHTML=data.map(d=>`<div class="baritem"><div>${d.name}</div><div class="track"><div class="fill" style="width:${d.score}%"></div></div><div class="scoretag">${d.score}</div></div>`).join("");
+}
+drawRadar(dimensions);renderLegend();renderBars("barlist",dimensions);
+
+const goals=[
+ {name:"Liderança / gestão acadêmica",score:95},
+ {name:"Impacto público e extensão",score:94},
+ {name:"Promoção / memorial de carreira",score:88},
+ {name:"Pós-doc internacional",score:83},
+ {name:"Fortalecimento em PPG",score:76},
+ {name:"Editais de pesquisa competitivos",score:71}
+];
+renderBars("goalbars",goals);
+
+const scenarios={
+ atual:{score:81,text:"<b>2026 — muito competitivo.</b> A estrutura já é forte, mas o currículo ainda depende muito de liderança, extensão, técnica e trajetória. O próximo salto precisa vir da pesquisa de maior impacto e da formação stricto sensu concluída.", dims:dimensions.map(d=>({...d}))},
+ 2027:{score:88,text:"<b>Meta 2027 — salto qualitativo plausível.</b> Pressupõe 2 artigos internacionais fortes, ao menos 1 mestrado concluído, 1 proposta de financiamento relevante e uma ação concreta de internacionalização.",dims:[
+  {name:"Produção bibliográfica",score:86},{name:"Momentum recente",score:95},{name:"Formação / orientação",score:76},{name:"Coerência de pesquisa",score:93},{name:"Liderança acadêmica",score:96},{name:"Internacionalização",score:83},{name:"Rede / reconhecimento",score:84},{name:"Impacto técnico-social",score:95}
+ ]},
+ 2028:{score:92,text:"<b>Meta 2028 — perfil altamente consolidado.</b> Pressupõe recorrência internacional, 1 tese ou múltiplas dissertações concluídas, projeto financiado, produção forte sustentada e rede externa mais densa.",dims:[
+  {name:"Produção bibliográfica",score:91},{name:"Momentum recente",score:94},{name:"Formação / orientação",score:87},{name:"Coerência de pesquisa",score:95},{name:"Liderança acadêmica",score:96},{name:"Internacionalização",score:90},{name:"Rede / reconhecimento",score:90},{name:"Impacto técnico-social",score:96}
+ ]}
+};
+function showScenario(key){
+ const s=scenarios[key];document.getElementById("scenarioText").innerHTML=s.text;
+ renderBars("scenarioBars",s.dims);
+ document.querySelectorAll("[data-scenario]").forEach(b=>b.classList.toggle("active",b.dataset.scenario===key));
+}
+document.querySelectorAll("[data-scenario]").forEach(b=>b.addEventListener("click",()=>showScenario(b.dataset.scenario)));
+showScenario("atual");
+
+document.querySelectorAll(".chk input").forEach(i=>i.addEventListener("change",()=>{
+ let score=81; document.querySelectorAll(".chk input:checked").forEach(c=>score+=parseFloat(c.dataset.add));
+ score=Math.min(96,score);
+ document.getElementById("simScore").textContent=score.toFixed(score%1?1:0);
+ const delta=score-81; document.getElementById("simDelta").textContent=delta?`+${delta.toFixed(1)} pontos estimados`:"cenário atual";
+}));
+</script>
+</body></html>
