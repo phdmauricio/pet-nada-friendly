@@ -1,1 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resenhas | Maurício Bozatski</title>
 
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    header p {
+      margin-top: 10px;
+      color: #ccc;
+    }
+
+    nav {
+      background: #222;
+      padding: 12px 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card h2 {
+      margin-top: 0;
+    }
+
+    .autor {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .tags {
+      margin: 15px 0;
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    .botao {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 10px 16px;
+      background: #111;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #777;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Resenhas</h1>
+    <p>Filosofia, ciência, tecnologia, evolução e sociedade</p>
+  </header>
+
+  <nav>
+    <a href="../index.html">Início</a>
+    <a href="index.html">Resenhas</a>
+  </nav>
+
+  <main>
+    <div class="grid">
+
+      <article class="card">
+        <h2>Behave</h2>
+
+        <p class="autor">
+          Robert M. Sapolsky
+        </p>
+
+        <p>
+          Uma análise interdisciplinar das causas do comportamento humano,
+          reunindo neurociência, endocrinologia, desenvolvimento,
+          evolução, cultura e contexto social.
+        </p>
+
+        <div class="tags">
+          Comportamento · Evolução · Neurociência · Filosofia
+        </div>
+
+        <a class="botao" href="behave.html">
+          Abrir resenha →
+        </a>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    Maurício Bozatski
+  </footer>
+
+</body>
+</html>
